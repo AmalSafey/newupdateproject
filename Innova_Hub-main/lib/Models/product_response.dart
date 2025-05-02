@@ -41,24 +41,20 @@ class CategoryModel {
 }
 
 class ProductResponse {
-  // Basic product info
   final int productId;
   final String name;
   final String description;
   final String authorId;
   final String authorName;
 
-  // Category info
   final int categoryId;
   final String categoryName;
 
-  // Product details
   final String weight;
   final String dimensions;
   final String productImage;
   final List<String> productImages;
 
-  // Pricing
   final num priceBeforeDiscount;
   final num priceAfterDiscount;
   final num discountPercentage;

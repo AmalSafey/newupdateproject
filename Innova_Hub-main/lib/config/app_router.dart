@@ -71,6 +71,7 @@ abstract class AppRouter {
         CheckoutAddress.routeName: (_) => const CheckoutAddress(),
         OwnerPublish.routeName: (_) => const OwnerPublish(),
         PaymentPage.routeName: (_) => const PaymentPage(),
-        MyWidget.routname: (context) => MyWidget(), // مؤقتًا بدون تمرير product
+        ReviewScreen.routeName: (context) =>
+            ReviewScreen(), // مؤقتًا بدون تمرير product
       };
 }
