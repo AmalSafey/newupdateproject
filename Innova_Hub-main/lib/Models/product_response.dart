@@ -1,5 +1,3 @@
-// Model:(products):
-
 class CategoryModel {
   // attributes:
   String categoryName;
@@ -174,6 +172,24 @@ class ProductResponse {
     };
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*class ProductResponse{
   
   // attributes of each product:
@@ -233,4 +249,5 @@ class ProductResponse {
    }
 
 }
+
 */

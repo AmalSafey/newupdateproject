@@ -419,10 +419,10 @@ class _ProductPageState extends State<ProductPage> {
                     ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: comments.length,
+                      itemCount: product.productReviews.length,
                       separatorBuilder: (context, index) => const Divider(),
                       itemBuilder: (context, index) =>
-                          _buildReviewItem(comments[index]),
+                          _buildReviewItem(product.productReviews[index]),
                     ),
                   const SizedBox(height: 16),
                 ],
@@ -463,11 +463,13 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   Widget _buildRatingSummary() {
-    final totalRatings = (product.ratingBreakdown['5 star'] ?? 0) +
-        (product.ratingBreakdown['4 star'] ?? 0) +
-        (product.ratingBreakdown['3 star'] ?? 0) +
-        (product.ratingBreakdown['2 star'] ?? 0) +
-        (product.ratingBreakdown['1 star'] ?? 0);
+    final breakdown = product.ratingBreakdown ?? {};
+
+    final totalRatings = (breakdown['5 star'] ?? 0) +
+        (breakdown['4 star'] ?? 0) +
+        (breakdown['3 star'] ?? 0) +
+        (breakdown['2 star'] ?? 0) +
+        (breakdown['1 star'] ?? 0);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -498,35 +500,35 @@ class _ProductPageState extends State<ProductPage> {
               _buildRatingBar(
                 5,
                 totalRatings > 0
-                    ? (product.ratingBreakdown['5 star'] ?? 0) / totalRatings
+                    ? (breakdown['5 star'] ?? 0) / totalRatings
                     : 0,
                 Colors.green,
               ),
               _buildRatingBar(
                 4,
                 totalRatings > 0
-                    ? (product.ratingBreakdown['4 star'] ?? 0) / totalRatings
+                    ? (breakdown['4 star'] ?? 0) / totalRatings
                     : 0,
                 Colors.lightGreen,
               ),
               _buildRatingBar(
                 3,
                 totalRatings > 0
-                    ? (product.ratingBreakdown['3 star'] ?? 0) / totalRatings
+                    ? (breakdown['3 star'] ?? 0) / totalRatings
                     : 0,
                 Colors.amber,
               ),
               _buildRatingBar(
                 2,
                 totalRatings > 0
-                    ? (product.ratingBreakdown['2 star'] ?? 0) / totalRatings
+                    ? (breakdown['2 star'] ?? 0) / totalRatings
                     : 0,
                 Colors.orange,
               ),
               _buildRatingBar(
                 1,
                 totalRatings > 0
-                    ? (product.ratingBreakdown['1 star'] ?? 0) / totalRatings
+                    ? (breakdown['1 star'] ?? 0) / totalRatings
                     : 0,
                 Colors.deepOrange,
               ),
@@ -559,7 +561,11 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  Widget _buildReviewItem(ProductComment comment) {
+  Widget _buildReviewItem(Map<String, dynamic> comment) {
+    final userName = comment['UserName'] ?? 'Anonymous';
+    final commentText = comment['CommentText'] ?? '';
+    final rating = comment['Rating'] ?? 0;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: Column(
@@ -578,9 +584,7 @@ class _ProductPageState extends State<ProductPage> {
                   color: Colors.white,
                 ),
                 child: Text(
-                  comment.userName.isNotEmpty
-                      ? comment.userName[0].toUpperCase()
-                      : '?',
+                  userName.isNotEmpty ? userName[0].toUpperCase() : '?',
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -589,7 +593,7 @@ class _ProductPageState extends State<ProductPage> {
               ),
               const SizedBox(width: 12),
               Text(
-                comment.userName.isNotEmpty ? comment.userName : 'Anonymous',
+                userName.isNotEmpty ? userName : 'Anonymous',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -600,9 +604,7 @@ class _ProductPageState extends State<ProductPage> {
           Row(
             children: List.generate(5, (index) {
               return Icon(
-                index < product.numberOfRatings // Using product's rating
-                    ? Icons.star
-                    : Icons.star_border,
+                index < rating ? Icons.star : Icons.star_border,
                 color: Colors.amber,
                 size: 18,
               );
@@ -610,7 +612,7 @@ class _ProductPageState extends State<ProductPage> {
           ),
           const SizedBox(height: 8),
           Text(
-            comment.commentText,
+            commentText,
             style: const TextStyle(fontSize: 14),
           ),
           const SizedBox(height: 8),
